@@ -24,6 +24,19 @@
   <ItemGroup>
     <Compile Include="Invoker.py" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="1.png" />
+    <Content Include="10.png" />
+    <Content Include="2.png" />
+    <Content Include="3.png" />
+    <Content Include="4.png" />
+    <Content Include="5.png" />
+    <Content Include="6.png" />
+    <Content Include="7.png" />
+    <Content Include="8.png" />
+    <Content Include="9.png" />
+    <Content Include="invoker.ahk" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <PtvsTargetsFile>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets</PtvsTargetsFile>
