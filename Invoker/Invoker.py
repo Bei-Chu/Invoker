@@ -1,7 +1,8 @@
 from PIL import ImageGrab
 import cv2
 import os
-from matplotlib import pyplot
+import win32api, win32con
+import pythoncom, pyHook
 
 threshold = 100
 
@@ -19,16 +20,49 @@ def recognize_letter(region, templates):
     img = ImageGrab.grab(bbox=region)
     return 'x'
     
-def write_to_file(letter1, letter2):
-    file = open('cur_ability.txt', 'w')
-    file.write(letter1)
-    file.write(letter2)
-    file.close()
+
+class AbilityDetector:
+    def __init__(self):
+        self.ability1 = ''
+        self.ability2 = ''
+
+    def detect(self):
+        self.ability1 = ''
+        self.ability2 = ''
+
+
+class Hook:
+    def __init__(self):
+        self.detector = AbilityDetector()
+        self.short_cuts = {'t':'eeerwww', 'y':'qqqrwww', 'd':'eewrww', 'f':'qeerwww', 'g':'qqerwww', 'z':'ewwrw', 'x':'qwwrw', 'c':'wwwr', 'v':'qqwrww', 'b':'qewrww'}
+        self.vkey = {'q':0x51, 'w':0x57, 'e':0x45, 'r':0x52}
+        self.type_mode = False
+        self.manager = pyHook.HookManager()
+        self.manager.KeyDown = self.on_keyboard_event
+        self.manager.HookKeyboard()
+
+    def on_keyboard_event(self, event):
+        key = event.Key.lower()
+        if key == 'return':
+            self.type_mode = not self.type_mode
+            return True
+        
+        if (not self.type_mode) and self.short_cuts.has_key(key):
+            self.detector.detect()
+            if (self.detector.ability1 != key and self.detector.ability2 != key):
+                self.trigger_keys(self.short_cuts[key])
+                return False
+        
+        return True
+            
+    def trigger_keys(self, keys):
+        self.manager.UnhookKeyboard();
+        for key in keys:
+            win32api.keybd_event(self.vkey[key], 0, 0, 0)
+            win32api.keybd_event(self.vkey[key], 0, win32con.KEYEVENTF_KEYUP, 0)
+        self.manager.HookKeyboard()
+
 
 if __name__ == '__main__':
-    templates = read_templates()
-    region1 = ()
-    region2 = ()
-    letter1 = recognize_letter(region1, templates)
-    letter2 = recognize_letter(region2, templates)
-    write_to_file(letter1, letter2)
+    hook = Hook()
+    pythoncom.PumpMessages()
