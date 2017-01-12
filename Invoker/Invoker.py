@@ -4,6 +4,7 @@ import win32api, win32con
 import pythoncom, pyHook
 import numpy as np
 import SendInput
+import time
 
 class AbilityDetector:
     def __init__(self):
@@ -44,11 +45,11 @@ class Hook:
         self.short_cuts = {'t':'eeerwww', 'y':'qqqrwww', 'd':'eewrww', 'f':'qeerwww', 'g':'qqerwww', 'z':'ewwrw', 'x':'qwwrw', 'c':'wwwr', 'v':'qqwrww', 'b':'qewrww'}
         self.type_mode = False
         self.manager = pyHook.HookManager()
-        self.manager.KeyDown = self.on_keyboard_event
+        self.manager.KeyDown = self.on_keydown
         self.manager.HookKeyboard()
         self.triggering = False
 
-    def on_keyboard_event(self, event):
+    def on_keydown(self, event):
         if self.triggering:
             return True
 
@@ -62,15 +63,17 @@ class Hook:
             if (self.detector.ability1 != key and self.detector.ability2 != key):
                 self.trigger_keys(self.short_cuts[key])
                 return False
-#            elif (key == 'y'):
-#                self.trigger_keys('ya')
-#                return False
+            elif (key == 'y'):
+                self.trigger_keys('y')
+                time.sleep(0.1)
+                self.trigger_keys('a')
+                return False
         
         return True
             
     def trigger_keys(self, keys):
         self.triggering = True
-        SendInput.send_input(keys)
+        SendInput.send_input_str(keys)
         self.triggering = False
 
 if __name__ == '__main__':

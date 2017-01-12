@@ -16,7 +16,34 @@ KEYEVENTF_SCANCODE = 0x0008
 MAPVK_VK_TO_VSC = 0
 
 # msdn.microsoft.com/en-us/library/dd375731
-vkey = {'q':0x51, 'w':0x57, 'e':0x45, 'r':0x52, 'y':0x59, 'a':0x41}
+vkey = {
+    'a':0x41,
+    'b':0x42,
+    'c':0x43,
+    'd':0x44,
+    'e':0x45,
+    'f':0x46,
+    'g':0x47,
+    'h':0x48,
+    'i':0x49,
+    'j':0x4a,
+    'k':0x4b,
+    'l':0x4c,
+    'm':0x4d,
+    'n':0x4e,
+    'o':0x4f,
+    'p':0x50,
+    'q':0x51, 
+    'r':0x52,
+    's':0x53,
+    't':0x54,
+    'u':0x55,
+    'v':0x56,
+    'w':0x57,
+    'x':0x58,
+    'y':0x59,
+    'z':0x5a 
+    }
 extra_info = 0xFFC3D44D
 
 # C struct definitions
@@ -79,7 +106,7 @@ def ReleaseKey(hexKeyCode):
     x = INPUT(type=INPUT_KEYBOARD, ki=KEYBDINPUT(wVk=hexKeyCode, dwFlags=KEYEVENTF_KEYUP))
     user32.SendInput(1, ctypes.byref(x), ctypes.sizeof(x))
 
-def send_input(str):
+def send_input_str(str):
     inputs = (INPUT * (2 * len(str)))()
     for i in range(len(str)):
         inputs[2*i] = INPUT(type=INPUT_KEYBOARD, ki=KEYBDINPUT(wVk=vkey[str[i]], dwExtraInfo=extra_info))
