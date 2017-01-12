@@ -28,12 +28,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="q.png" />
     <Content Include="b.png" />
     <Content Include="v.png" />
     <Content Include="g.png" />
     <Content Include="c.png" />
     <Content Include="x.png" />
+    <Content Include="y.png" />
     <Content Include="z.png" />
     <Content Include="t.png" />
     <Content Include="f.png" />
