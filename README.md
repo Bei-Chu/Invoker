@@ -1,7 +1,7 @@
 # Invoker
 This program helps playing hero Invoker in game Dota 2.
 
-Only support playing under 1920*1080 resolution in full screen mode.
+Only support playing under 1920 * 1080 resolution in full screen mode.
 
 ## Prerequisites
 Anaconda version of Python 2.
