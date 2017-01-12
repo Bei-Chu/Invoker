@@ -3,13 +3,7 @@ import os
 import win32api, win32con
 import pythoncom, pyHook
 import numpy as np
-
-threshold = 100
-
-def recognize_letter(region, templates):
-    img = ImageGrab.grab(bbox=region)
-    return 'x'
-    
+import SendInput
 
 class AbilityDetector:
     def __init__(self):
@@ -48,13 +42,16 @@ class Hook:
     def __init__(self):
         self.detector = AbilityDetector()
         self.short_cuts = {'t':'eeerwww', 'y':'qqqrwww', 'd':'eewrww', 'f':'qeerwww', 'g':'qqerwww', 'z':'ewwrw', 'x':'qwwrw', 'c':'wwwr', 'v':'qqwrww', 'b':'qewrww'}
-        self.vkey = {'q':0x51, 'w':0x57, 'e':0x45, 'r':0x52}
         self.type_mode = False
         self.manager = pyHook.HookManager()
         self.manager.KeyDown = self.on_keyboard_event
         self.manager.HookKeyboard()
+        self.triggering = False
 
     def on_keyboard_event(self, event):
+        if self.triggering:
+            return True
+
         key = event.Key.lower()
         if key == 'return':
             self.type_mode = not self.type_mode
@@ -65,20 +62,16 @@ class Hook:
             if (self.detector.ability1 != key and self.detector.ability2 != key):
                 self.trigger_keys(self.short_cuts[key])
                 return False
-
-        if self.vkey.has_key(key):
-            self.trigger_keys(key)
-            return False        
-
+#            elif (key == 'y'):
+#                self.trigger_keys('ya')
+#                return False
+        
         return True
             
     def trigger_keys(self, keys):
-        self.manager.UnhookKeyboard();
-        for key in keys:
-            win32api.keybd_event(self.vkey[key], 0, 0, 0)
-            win32api.keybd_event(self.vkey[key], 0, win32con.KEYEVENTF_KEYUP, 0)
-        self.manager.HookKeyboard()
-
+        self.triggering = True
+        SendInput.send_input(keys)
+        self.triggering = False
 
 if __name__ == '__main__':
     hook = Hook()

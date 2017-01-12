@@ -242,3 +242,6 @@ ModelManifest.xml
 .fake/
 /Invoker/cur_ability.txt
 /Invoker/invoker.ahk
+/Invoker/dist/Invoker
+/Invoker/Invoker.spec
+/Invoker/SendInput.pyc
