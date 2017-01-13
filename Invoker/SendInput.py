@@ -1,6 +1,5 @@
 import ctypes
 from ctypes import wintypes
-import time
 
 user32 = ctypes.WinDLL('user32', use_last_error=True)
 
@@ -42,7 +41,7 @@ vkey = {
     'w':0x57,
     'x':0x58,
     'y':0x59,
-    'z':0x5a 
+    'z':0x5a
     }
 extra_info = 0xFFC3D44D
 
@@ -106,9 +105,9 @@ def ReleaseKey(hexKeyCode):
     x = INPUT(type=INPUT_KEYBOARD, ki=KEYBDINPUT(wVk=hexKeyCode, dwFlags=KEYEVENTF_KEYUP))
     user32.SendInput(1, ctypes.byref(x), ctypes.sizeof(x))
 
-def send_input_str(str):
-    inputs = (INPUT * (2 * len(str)))()
-    for i in range(len(str)):
-        inputs[2*i] = INPUT(type=INPUT_KEYBOARD, ki=KEYBDINPUT(wVk=vkey[str[i]], dwExtraInfo=extra_info))
-        inputs[2*i + 1] = INPUT(type=INPUT_KEYBOARD, ki=KEYBDINPUT(wVk=vkey[str[i]], dwFlags=KEYEVENTF_KEYUP, dwExtraInfo=extra_info))
-    user32.SendInput(2*len(str), ctypes.byref(inputs[0]), ctypes.sizeof(INPUT))
+def send_input(input_list):
+    inputs = (INPUT * (2 * len(input_list)))()
+    for i in range(len(input_list)):
+        inputs[2*i] = INPUT(type=INPUT_KEYBOARD, ki=KEYBDINPUT(wVk=vkey[input_list[i]], dwExtraInfo=extra_info))
+        inputs[2*i + 1] = INPUT(type=INPUT_KEYBOARD, ki=KEYBDINPUT(wVk=vkey[input_list[i]], dwFlags=KEYEVENTF_KEYUP, dwExtraInfo=extra_info))
+    user32.SendInput(2*len(input_list), ctypes.byref(inputs[0]), ctypes.sizeof(INPUT))

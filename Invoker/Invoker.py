@@ -1,6 +1,5 @@
 from PIL import ImageGrab, Image, ImageChops
 import os
-import win32api, win32con
 import pythoncom, pyHook
 import numpy as np
 import SendInput
@@ -42,7 +41,17 @@ class AbilityDetector:
 class Hook:
     def __init__(self):
         self.detector = AbilityDetector()
-        self.short_cuts = {'t':'eeerwww', 'y':'qqqrwww', 'd':'eewrww', 'f':'qeerwww', 'g':'qqerwww', 'z':'ewwrw', 'x':'qwwrw', 'c':'wwwr', 'v':'qqwrww', 'b':'qewrww'}
+        self.short_cuts = {
+            't':list('eeerwww'), 
+            'y':list('qqqrwww'), 
+            'd':list('eewrww'), 
+            'f':list('qeerwww'), 
+            'g':list('qqerwww'), 
+            'z':list('ewwrw'), 
+            'x':list('qwwrw'), 
+            'c':list('wwwr'), 
+            'v':list('qqwrww'), 
+            'b':list('qewrww')}
         self.type_mode = False
         self.manager = pyHook.HookManager()
         self.manager.KeyDown = self.on_keydown
@@ -73,7 +82,7 @@ class Hook:
             
     def trigger_keys(self, keys):
         self.triggering = True
-        SendInput.send_input_str(keys)
+        SendInput.send_input(keys)
         self.triggering = False
 
 if __name__ == '__main__':
